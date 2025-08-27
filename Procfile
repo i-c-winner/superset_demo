@@ -1,1 +1,1 @@
-web: gunicorn superset_presentation.wsgi:application
+web: python manage.py migrate && gunicorn superset_presentation.wsgi:application --bind 0.0.0.0:$PORT
