@@ -153,6 +153,123 @@
         text-align: center;
     }
     
+    .useful-links-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 6rem 0;
+    }
+    
+    .links-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        text-align: center;
+    }
+    
+    .links-subtitle {
+        font-size: 1.2rem;
+        color: #6c757d;
+        margin-bottom: 4rem;
+        text-align: center;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .link-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        border: none;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .link-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .link-card:hover::before {
+        left: 100%;
+    }
+    
+    .link-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .link-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: white;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .link-icon-docs {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .link-icon-github {
+        background: linear-gradient(135deg, #24292e 0%, #444d56 100%);
+    }
+    
+    .link-icon-community {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .link-icon-demo {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .link-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+    
+    .link-description {
+        color: #6c757d;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+    
+    .link-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.75rem 2rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .link-btn:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
     .cta-title {
         font-size: 2.5rem;
         font-weight: 600;
@@ -333,6 +450,84 @@
     </div>
 </section>
 
+<!-- Useful Links Section -->
+<section class="useful-links-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="links-title">
+                    <i class="bi bi-link-45deg me-3"></i>Полезные ссылки
+                </h2>
+                <p class="links-subtitle">
+                    Изучайте Apache Superset глубже с помощью официальных ресурсов и сообщества
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card link-card">
+                    <div class="link-icon link-icon-docs">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h4 class="link-title">Документация</h4>
+                    <p class="link-description">
+                        Официальная документация Apache Superset с руководствами по установке и настройке
+                    </p>
+                    <a href="https://superset.apache.org/docs/intro" target="_blank" class="link-btn">
+                        <i class="bi bi-arrow-right me-2"></i>Перейти
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card link-card">
+                    <div class="link-icon link-icon-github">
+                        <i class="bi bi-github"></i>
+                    </div>
+                    <h4 class="link-title">GitHub Repository</h4>
+                    <p class="link-description">
+                        Исходный код проекта, баг-репорты, обсуждения и последние релизы
+                    </p>
+                    <a href="https://github.com/apache/superset" target="_blank" class="link-btn">
+                        <i class="bi bi-arrow-right me-2"></i>Исходники
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card link-card">
+                    <div class="link-icon link-icon-community">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h4 class="link-title">Сообщество</h4>
+                    <p class="link-description">
+                        Присоединяйтесь к Slack-каналу для общения с разработчиками и пользователями
+                    </p>
+                    <a href="https://join.slack.com/t/apache-superset/shared_invite/zt-l5f5e0av-fyYu8tlfdqbMdz_sPLwUqQ" target="_blank" class="link-btn">
+                        <i class="bi bi-arrow-right me-2"></i>Slack
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card link-card">
+                    <div class="link-icon link-icon-demo">
+                        <i class="bi bi-play-circle"></i>
+                    </div>
+                    <h4 class="link-title">Live Demo</h4>
+                    <p class="link-description">
+                        Попробуйте реальный Superset в действии на официальном демо-стенде
+                    </p>
+                    <a href="https://superset.apache.org" target="_blank" class="link-btn">
+                        <i class="bi bi-arrow-right me-2"></i>Демо
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="cta-section">
     <div class="container">
@@ -429,6 +624,19 @@
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, 100 + index * 100);
+        });
+        
+        // Анимация для карточек полезных ссылок
+        const linkCards = document.querySelectorAll('.link-card');
+        linkCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `all 0.6s ease ${(index * 0.1) + 0.5}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 600 + index * 100);
         });
     });
 </script>
