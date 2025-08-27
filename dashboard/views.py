@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
-from plotly.offline import plot
+import pandas as pd
 import numpy as np
+from django.utils.safestring import mark_safe
 from datetime import datetime, timedelta
-import random
 
 
 def dashboard_home(request):
@@ -40,196 +38,94 @@ def dashboard_home(request):
 
 
 def dashboards_view(request):
-    """Страница дашбордов с интерактивными графиками Plotly."""
+    """Страница дашбордов с интерактивными графиками Plotly - НОВЫЙ УПРОЩЕННЫЙ МЕТОД."""
     
-    # Кастомная цветовая палитра для соответствия дизайну сайта
-    custom_colors = {
-        'primary': '#667eea',
-        'secondary': '#764ba2', 
-        'accent1': '#f093fb',
-        'accent2': '#f5576c',
-        'accent3': '#4facfe',
-        'accent4': '#00f2fe',
-        'success': '#96fbc4',
-        'warning': '#f9f586'
-    }
+    # ГЕНЕРАЦИЯ ДЕМО-ДАННЫХ
     
-    color_palette = [custom_colors['primary'], custom_colors['accent1'], custom_colors['accent3'], 
-                    custom_colors['accent2'], custom_colors['secondary'], custom_colors['accent4']]
+    # График 1: Линейный график - динамика продаж
+    dates = pd.date_range(start='2023-01-01', periods=30, freq='D')
+    sales_values = [1000 + i*50 + np.random.normal(0, 100) for i in range(30)]
     
-    # Генерация демонстрационных данных
-    
-    # 1. Данные для временного ряда (продажи)
-    dates = pd.date_range(start='2023-01-01', end='2024-12-31', freq='D')
-    sales_data = {
-        'date': dates,
-        'revenue': np.cumsum(np.random.normal(1000, 300, len(dates))) + 50000,
-        'orders': np.random.poisson(25, len(dates)) + np.sin(np.arange(len(dates)) * 2 * np.pi / 365) * 10 + 30
-    }
-    df_sales = pd.DataFrame(sales_data)
-    
-    # 2. Данные по категориям товаров
-    categories_data = {
-        'category': ['Электроника', 'Одежда', 'Книги', 'Спорт', 'Дом и сад', 'Красота'],
-        'sales': [45000, 32000, 18000, 25000, 28000, 22000],
-        'profit_margin': [15.2, 35.8, 45.1, 28.3, 31.7, 42.5]
-    }
-    df_categories = pd.DataFrame(categories_data)
-    
-    # 3. Данные по регионам
-    regions_data = {
-        'region': ['Москва', 'СПб', 'Новосибирск', 'Екатеринбург', 'Казань'],
-        'market_share': [35, 20, 15, 18, 12]
-    }
-    df_regions = pd.DataFrame(regions_data)
-    
-    # 4. Данные для scatter plot (бюджет вс результат)
-    campaigns_data = {
-        'campaign': [f'Кампания {i}' for i in range(1, 21)],
-        'budget': np.random.uniform(5000, 50000, 20),
-        'conversions': np.random.uniform(50, 500, 20),
-        'channel': np.random.choice(['Соцсети', 'Google Ads', 'Email', 'SEO'], 20)
-    }
-    df_campaigns = pd.DataFrame(campaigns_data)
-    
-    # 5. Данные для heatmap (посещаемость по часам и дням)
-    days = ['Пон', 'Вто', 'Сре', 'Чет', 'Пят', 'Суб', 'Вос']
-    hours = list(range(24))
-    traffic_matrix = np.random.poisson(10, (len(days), len(hours))) + \
-                    np.outer(np.array([8, 9, 10, 11, 12, 6, 5]), 
-                            np.sin(np.linspace(0, 2*np.pi, 24)) * 5 + 10)
-    
-    # Создание графиков Plotly
-    
-    # 1. Линейный график - динамика продаж
-    line_fig = go.Figure()
-    line_fig.add_trace(go.Scatter(
-        x=df_sales['date'], 
-        y=df_sales['revenue'],
-        mode='lines',
-        name='Выручка',
+    fig_line = go.Figure()
+    fig_line.add_trace(go.Scatter(
+        x=dates, 
+        y=sales_values, 
+        mode='lines+markers', 
+        name='Продажи',
         line=dict(color='#667eea', width=3),
-        hovertemplate='<b>Дата:</b> %{x}<br><b>Выручка:</b> %{y:,.0f} ₽<extra></extra>'
+        marker=dict(size=6)
     ))
-    
-    line_fig.update_layout(
-        title='Динамика выручки по времени',
+    fig_line.update_layout(
+        title='Динамика продаж за январь 2023',
         xaxis_title='Дата',
-        yaxis_title='Выручка (₽)',
+        yaxis_title='Сумма (руб.)',
+        height=400,
         font=dict(family='Inter, sans-serif'),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        height=400
-    )
-    line_chart = plot(line_fig, output_type='div', include_plotlyjs=False)
-    
-    # 2. Столбчатая диаграмма - продажи по категориям
-    bar_fig = go.Figure(data=[
-        go.Bar(
-            x=df_categories['category'],
-            y=df_categories['sales'],
-            marker_color=color_palette,
-            hovertemplate='<b>Категория:</b> %{x}<br><b>Продажи:</b> %{y:,.0f} ₽<extra></extra>'
-        )
-    ])
-    
-    bar_fig.update_layout(
-        title='Продажи по категориям товаров',
-        xaxis_title='Категории',
-        yaxis_title='Продажи (₽)',
-        font=dict(family='Inter, sans-serif'),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        height=400
-    )
-    bar_chart = plot(bar_fig, output_type='div', include_plotlyjs=False)
-    
-    # 3. Круговая диаграмма - доля рынка по регионам
-    pie_fig = go.Figure(data=[
-        go.Pie(
-            labels=df_regions['region'],
-            values=df_regions['market_share'],
-            hole=0.4,  # Для создания donut chart
-            marker_colors=color_palette[:5],
-            hovertemplate='<b>Регион:</b> %{label}<br><b>Доля:</b> %{value}%<extra></extra>'
-        )
-    ])
-    
-    pie_fig.update_layout(
-        title='Доля рынка по регионам',
-        font=dict(family='Inter, sans-serif'),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        height=400
-    )
-    pie_chart = plot(pie_fig, output_type='div', include_plotlyjs=False)
-    
-    # 4. Точечная диаграмма - эффективность кампаний
-    scatter_fig = px.scatter(
-        df_campaigns, 
-        x='budget', 
-        y='conversions',
-        color='channel',
-        size='conversions',
-        hover_data=['campaign'],
-        color_discrete_sequence=color_palette
+        paper_bgcolor='rgba(0,0,0,0)'
     )
     
-    scatter_fig.update_layout(
-        title='Эффективность рекламных кампаний',
-        xaxis_title='Бюджет (₽)',
-        yaxis_title='Конверсии',
-        font=dict(family='Inter, sans-serif'),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        height=400
-    )
-    scatter_chart = plot(scatter_fig, output_type='div', include_plotlyjs=False)
+    # График 2: Столбчатая диаграмма - выручка по продуктам
+    categories = ['Продукт A', 'Продукт B', 'Продукт C', 'Продукт D', 'Продукт E']
+    revenue = [45000, 35000, 61000, 28000, 52000]
     
-    # 5. Heatmap - посещаемость по часам и дням
-    heatmap_fig = go.Figure(data=go.Heatmap(
-        z=traffic_matrix,
-        x=hours,
-        y=days,
-        colorscale='Viridis',
-        hovertemplate='<b>День:</b> %{y}<br><b>Час:</b> %{x}:00<br><b>Посетители:</b> %{z}<extra></extra>'
+    fig_bar = go.Figure()
+    fig_bar.add_trace(go.Bar(
+        x=categories, 
+        y=revenue, 
+        name='Выручка',
+        marker_color=['#667eea', '#f093fb', '#4facfe', '#f5576c', '#764ba2']
     ))
-    
-    heatmap_fig.update_layout(
-        title='Посещаемость сайта по часам и дням недели',
-        xaxis_title='Час дня',
-        yaxis_title='День недели',
+    fig_bar.update_layout(
+        title='Выручка по продуктам',
+        xaxis_title='Продукт',
+        yaxis_title='Руб.',
+        height=400,
         font=dict(family='Inter, sans-serif'),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        height=400
+        paper_bgcolor='rgba(0,0,0,0)'
     )
-    heatmap_chart = plot(heatmap_fig, output_type='div', include_plotlyjs=False)
     
-    # 6. Treemap - структура прибыли по категориям
-    treemap_fig = go.Figure(go.Treemap(
-        labels=df_categories['category'],
-        values=df_categories['sales'],
-        parents=[""] * len(df_categories),
-        textinfo="label+value+percent parent",
-        hovertemplate='<b>Категория:</b> %{label}<br><b>Продажи:</b> %{value:,.0f} ₽<extra></extra>'
-    ))
+    # График 3: Круговая диаграмма - распределение бюджета
+    labels = ['Маркетинг', 'Разработка', 'Администрация', 'Продажи']
+    values_pie = [35, 25, 20, 20]
     
-    treemap_fig.update_layout(
-        title='Структура продаж по категориям',
-        font=dict(family='Inter, sans-serif'),
-        height=400
+    fig_pie = go.Figure(data=[go.Pie(
+        labels=labels, 
+        values=values_pie, 
+        hole=.3,
+        marker_colors=['#667eea', '#f093fb', '#4facfe', '#f5576c']
+    )])
+    fig_pie.update_layout(
+        title='Распределение бюджета по отделам',
+        height=400,
+        font=dict(family='Inter, sans-serif')
     )
-    treemap_chart = plot(treemap_fig, output_type='div', include_plotlyjs=False)
     
+    # ПРЕОБРАЗОВАНИЕ ГРАФИКОВ В HTML-СТРОКИ
+    # Ключевой момент: используем fig.to_html() - САМЫЙ ПРОСТОЙ И НАДЕЖНЫЙ СПОСОБ!
+    plot_div_line = fig_line.to_html(
+        full_html=False, 
+        include_plotlyjs=False, 
+        div_id='plotly-line-chart'
+    )
+    plot_div_bar = fig_bar.to_html(
+        full_html=False, 
+        include_plotlyjs=False, 
+        div_id='plotly-bar-chart'
+    )
+    plot_div_pie = fig_pie.to_html(
+        full_html=False, 
+        include_plotlyjs=False, 
+        div_id='plotly-pie-chart'
+    )
+    
+    # Подготовка контекста с mark_safe для безопасного HTML
     context = {
         'page_title': 'Дашборды',
-        'line_chart': line_chart,
-        'bar_chart': bar_chart,
-        'pie_chart': pie_chart,
-        'scatter_chart': scatter_chart,
-        'heatmap_chart': heatmap_chart,
-        'treemap_chart': treemap_chart,
+        'plot_div_line': mark_safe(plot_div_line),
+        'plot_div_bar': mark_safe(plot_div_bar),
+        'plot_div_pie': mark_safe(plot_div_pie),
     }
     
     return render(request, 'dashboard/dashboards.html', context)

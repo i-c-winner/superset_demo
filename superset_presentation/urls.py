@@ -22,7 +22,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('dashboard.urls')),
-    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 ]
 
 # Маршруты для статических и медиа файлов (только для разработки)
