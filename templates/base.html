@@ -36,7 +36,6 @@
             background: var(--primary-gradient) !important;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            padding: 1rem 0;
         }
         
         .navbar-brand {
@@ -241,6 +240,14 @@
                         <li><a href="{% url 'dashboard:home' %}" class="text-light opacity-75 text-decoration-none">Главная</a></li>
                         <li><a href="{% url 'dashboard:dashboards' %}" class="text-light opacity-75 text-decoration-none">Дашборды</a></li>
                         <li><a href="{% url 'dashboard:about' %}" class="text-light opacity-75 text-decoration-none">О проекте</a></li>
+                    </ul>
+                </div>
+                      <div class="col-lg-3">
+                    <h6 class="mb-3">Контакты</h6>
+                    <ul class="list-unstyled">
+                       <p class="text-light opacity-75">
+                     тел. +998 91 770 49 12
+                    </p>
                     </ul>
                 </div>
             </div>

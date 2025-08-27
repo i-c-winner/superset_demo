@@ -1,178 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Дашборды - Superset Demo{% endblock %}
-
-{% block extra_css %}
-<style>
-    .dashboard-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 4rem 0 3rem;
-        margin-bottom: 3rem;
-    }
-    
-    .dashboard-title {
-        font-size: 3rem;
-        font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    
-    .chart-container {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        margin-bottom: 2rem;
-        height: 500px;
-    }
-    
-    .chart-container:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-    
-    .chart-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #f8f9fa;
-    }
-    
-    .chart-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        margin-right: 1rem;
-        font-size: 1.2rem;
-    }
-    
-    .chart-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<!-- Dashboard Header -->
-<section class="dashboard-header">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h1 class="dashboard-title">
-                    <i class="bi bi-bar-chart-line me-3"></i>Демо-дашборды
-                </h1>
-                <p class="lead">
-                    Примеры визуализации данных, аналогичные тем, что можно построить в Apache Superset
-                </p>
+<div class="container mt-4">
+    <h1 class="text-center mb-4 text-primary">Финансовые дашборды</h1>
+    <p class="lead text-center mb-5">Аналитика ключевых показателей в стандартах корпоративной отчетности</p>
+
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
+
+    <div class="row">
+        <!-- График 1 и 2 -->
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Динамика выручки и прибыли</h5>
+                    {{ plot_div_trend }}
+                </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- КЛЮЧЕВОЙ МОМЕНТ: Подключаем Plotly.js ТОЛЬКО ОДИН РАЗ! -->
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
-
-<!-- Сетка для графиков -->
-<div class="container">
-    <div class="row">
-        <!-- График 1: Линейный график -->
-        <div class="col-lg-6 mb-4">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <div class="chart-icon">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <h3 class="chart-title">Динамика продаж</h3>
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Структура операционных расходов</h5>
+                    {{ plot_div_expenses }}
                 </div>
-                <!-- ПРОСТО ВСТАВЛЯЕМ сгенерированный HTML (без |safe, т.к. уже mark_safe) -->
-                {{ plot_div_line }}
             </div>
         </div>
         
-        <!-- График 2: Столбчатая диаграмма -->
-        <div class="col-lg-6 mb-4">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <div class="chart-icon">
-                        <i class="bi bi-bar-chart"></i>
-                    </div>
-                    <h3 class="chart-title">Выручка по продуктам</h3>
+        <!-- График 3 и 4 -->
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Выполнение плана по месяцам</h5>
+                    {{ plot_div_plan_fact }}
                 </div>
-                {{ plot_div_bar }}
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Воронка продаж</h5>
+                    {{ plot_div_funnel }}
+                </div>
             </div>
         </div>
         
-        <!-- График 3: Круговая диаграмма -->
-        <div class="col-lg-6 mb-4 mx-auto">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <div class="chart-icon">
-                        <i class="bi bi-pie-chart"></i>
-                    </div>
-                    <h3 class="chart-title">Распределение бюджета</h3>
+        <!-- График 5 и 6 -->
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Просроченная дебиторская задолженность</h5>
+                    {{ plot_div_debt }}
                 </div>
-                {{ plot_div_pie }}
             </div>
         </div>
-    </div>
-    
-    <!-- Информационная карточка -->
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="card border-0 bg-light">
-                <div class="card-body text-center p-4">
-                    <h5 class="card-title text-primary mb-3">
-                        <i class="bi bi-info-circle me-2"></i>О дашбордах
-                    </h5>
-                    <p class="card-text text-muted">
-                        Все графики интерактивны: наведите курсор для детальной информации, 
-                        используйте масштабирование и фильтрацию. Это демо-версия возможностей Apache Superset.
-                    </p>
-                    <small class="text-muted">
-                        <i class="bi bi-clock me-1"></i>Последнее обновление: {{ "now"|date:"d.m.Y H:i" }} (НОВЫЙ МЕТОД fig.to_html)
-                    </small>
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Соотношение доходов и затрат</h5>
+                    {{ plot_div_scatter }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- График 7 и 8 -->
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Движение товарных запасов</h5>
+                    {{ plot_div_waterfall }}
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-md-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Конверсия по каналам продаж</h5>
+                    {{ plot_div_hbar }}
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Простая анимация появления карточек
-    document.addEventListener('DOMContentLoaded', function() {
-        const chartContainers = document.querySelectorAll('.chart-container');
-        chartContainers.forEach((container, index) => {
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(30px)';
-            container.style.transition = `all 0.6s ease ${index * 0.2}s`;
-            
-            setTimeout(() => {
-                container.style.opacity = '1';
-                container.style.transform = 'translateY(0)';
-            }, 100 + index * 200);
-        });
-        
-        // Обработчик для ресайза графиков
-        window.addEventListener('resize', () => {
-            if (typeof Plotly !== 'undefined') {
-                const plotlyDivs = document.querySelectorAll('[id^="plotly-"]');
-                plotlyDivs.forEach(div => {
-                    Plotly.Plots.resize(div);
-                });
-            }
-        });
-    });
-</script>
 {% endblock %}
