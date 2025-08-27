@@ -9,6 +9,9 @@ django-plotly-dash = "*"
 pandas = "*"
 gunicorn = "*"
 plotly = "*"
+dj-database-url = "*"
+whitenoise = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
