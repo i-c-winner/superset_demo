@@ -1,0 +1,420 @@
+{% extends 'base.html' %}
+
+{% block title %}Дашборды - Superset Demo{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .dashboard-title {
+        font-size: 3rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dashboard-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-top: 1rem;
+    }
+    
+    .chart-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .chart-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .chart-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f8f9fa;
+    }
+    
+    .chart-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .chart-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
+    
+    .plotly-graph-div {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .stats-cards {
+        margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #667eea;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1rem;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-section {
+        margin-bottom: 4rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 2rem;
+        }
+        
+        .chart-container {
+            padding: 1rem;
+        }
+        
+        .stat-card {
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<section class="dashboard-header">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h1 class="dashboard-title">
+                    <i class="bi bi-bar-chart-line me-3"></i>Аналитические дашборды
+                </h1>
+                <p class="dashboard-subtitle">
+                    Интерактивная визуализация данных с помощью Apache Superset
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Cards -->
+<section class="container stats-cards">
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <span class="stat-number">₽2.1M</span>
+                <div class="stat-label">Общая выручка</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-cart-check"></i>
+                </div>
+                <span class="stat-number">15,847</span>
+                <div class="stat-label">Заказов</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <span class="stat-number">8,231</span>
+                <div class="stat-label">Активных клиентов</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-percent"></i>
+                </div>
+                <span class="stat-number">24.5%</span>
+                <div class="stat-label">Рост продаж</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Charts Section -->
+<section class="container dashboard-section">
+    <h2 class="section-title">Основная аналитика</h2>
+    
+    <div class="row g-4">
+        <!-- Line Chart - Revenue Dynamics -->
+        <div class="col-lg-8">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <h3 class="chart-title">Динамика выручки</h3>
+                </div>
+                {{ line_chart|safe }}
+            </div>
+        </div>
+        
+        <!-- Pie Chart - Market Share -->
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-pie-chart"></i>
+                    </div>
+                    <h3 class="chart-title">Доля по регионам</h3>
+                </div>
+                {{ pie_chart|safe }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4 mt-2">
+        <!-- Bar Chart - Sales by Category -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+                    <h3 class="chart-title">Продажи по категориям</h3>
+                </div>
+                {{ bar_chart|safe }}
+            </div>
+        </div>
+        
+        <!-- Scatter Plot - Campaign Effectiveness -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+                    <h3 class="chart-title">Эффективность кампаний</h3>
+                </div>
+                {{ scatter_chart|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Advanced Analytics Section -->
+<section class="container dashboard-section">
+    <h2 class="section-title">Углубленная аналитика</h2>
+    
+    <div class="row g-4">
+        <!-- Heatmap - Website Traffic -->
+        <div class="col-lg-8">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                    </div>
+                    <h3 class="chart-title">Карта активности пользователей</h3>
+                </div>
+                {{ heatmap_chart|safe }}
+            </div>
+        </div>
+        
+        <!-- Treemap - Sales Structure -->
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h3 class="chart-title">Структура продаж</h3>
+                </div>
+                {{ treemap_chart|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Info -->
+<section class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 bg-light">
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title text-primary mb-3">
+                        <i class="bi bi-info-circle me-2"></i>О дашбордах
+                    </h5>
+                    <p class="card-text text-muted">
+                        Все графики интерактивны: наведите курсор для детальной информации, 
+                        используйте масштабирование и фильтрацию. Данные обновляются в реальном времени 
+                        и отражают актуальное состояние бизнес-процессов.
+                    </p>
+                    <small class="text-muted">
+                        <i class="bi bi-clock me-1"></i>Последнее обновление: {{ "now"|date:"d.m.Y H:i" }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+    // Анимация появления карточек при скролле
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Применяем анимацию к карточкам графиков
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartContainers = document.querySelectorAll('.chart-container');
+        chartContainers.forEach(container => {
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            container.style.transition = 'all 0.6s ease';
+            observer.observe(container);
+        });
+
+        // Анимация для статистических карточек
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 + index * 100);
+        });
+
+        // Настройка всех графиков Plotly для лучшего отображения
+        const plotlyDivs = document.querySelectorAll('.plotly-graph-div');
+        plotlyDivs.forEach(div => {
+            // Добавляем обработчик для ресайза
+            window.addEventListener('resize', () => {
+                Plotly.Plots.resize(div);
+            });
+            
+            // Настройка конфигурации для лучшего UX
+            const config = {
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                responsive: true
+            };
+            
+            // Применяем конфигурацию если график уже существует
+            if (div._fullLayout) {
+                Plotly.redraw(div);
+            }
+        });
+    });
+
+    // Smooth scrolling для внутренних ссылок
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
